@@ -6,14 +6,13 @@ using System.Web;
 
 namespace Notestash_Admin.Models
 {
-    public class userData
+    public class signIn
     {
-
-        public int Id { get; set; }
-        public string FullName { get; set; }
+        [Required]
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
         public string Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
-        public byte[] ProfilePicture { get; set; }
-        public int Status { get; set; }
     }
 }

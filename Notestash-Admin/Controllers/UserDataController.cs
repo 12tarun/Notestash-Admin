@@ -8,7 +8,7 @@ namespace Notestash_Admin.Controllers
 {
     public class UserDataController : Controller
     {
-        // GET: UserData
+        // Display user information
         public ActionResult User_Data()
         {
             using (Notestash_Database_Entities db = new Notestash_Database_Entities())

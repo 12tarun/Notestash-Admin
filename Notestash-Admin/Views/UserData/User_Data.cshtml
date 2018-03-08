@@ -3,7 +3,7 @@
     ViewBag.Title = "User_Data";
 }
 
-<h2>User_Data</h2>
+<h2>User Data</h2>
 
 <table class="table">
     <thead class="thead-inverse">
@@ -23,9 +23,6 @@
             <th>
                 PROFILE PICTURE
             </th>
-            <th>
-                STATUS
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -33,19 +30,19 @@
         {
             <tr>
                 <td>
-                    item.Id
+                    @item.Id
                 </td>
                 <td>
-                    item.FullName
+                    @item.FullName
                 </td>
                 <td>
-                    item.Email
+                    @item.Email
                 </td>
                 <td>
-                    item.Password
+                    @item.Password
                 </td>
                 <td>
-                    item.ProfilePicture
+                    @item.ProfilePicture
                 </td>
             </tr>
         }
