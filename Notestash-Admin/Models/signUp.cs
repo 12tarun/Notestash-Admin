@@ -18,7 +18,7 @@ namespace Notestash_Admin.Models
         [Required(ErrorMessage = "Full Name Required", AllowEmptyStrings = false)]
         public string FullName { get; set; }
         [Required(ErrorMessage = "Email Required", AllowEmptyStrings = false)]
-        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [Required(ErrorMessage = "Password Required", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
@@ -29,8 +29,10 @@ namespace Notestash_Admin.Models
         [StringLength(15, MinimumLength = 6, ErrorMessage = "Password should be between 6 to 15 characters!")]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+        public int IsEmailVerified { get; set; }
+        public Guid ActivationCode { get; set; }
 
-        public int Create(signUp objUser)
+        public string Create(signUp objUser)
         {
             var sha384Factory = HmacFactory;
             var random = new CryptoRandom();
@@ -61,6 +63,8 @@ namespace Notestash_Admin.Models
                 objTblUser.Email = objUser.Email;
                 objTblUser.Salt = salt;
                 objTblUser.ProfilePicture = null;
+                objTblUser.IsEmailVerified = 0;
+                objTblUser.ActivationCode = Guid.NewGuid().ToString();
 
                 using (Notestash_Database_Entities db = new Notestash_Database_Entities())
                 {
@@ -70,20 +74,19 @@ namespace Notestash_Admin.Models
                     {
                         db.tblUsers.Add(objTblUser);
                         db.SaveChanges();
-
-                        return 1;
+                        return objUser.Email;
                     }
                     else
                     {
-                        return 2;
+                        return "exists";
                     }
                 }
             }
             catch (Exception ex)
             {
-                //  exceptionmes = ex.Message;
-                return 3;
+                return "error";              
             }
         }
+
     }
 }
