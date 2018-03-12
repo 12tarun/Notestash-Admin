@@ -86,3 +86,5 @@ C:\Projects\Notestash-Admin\Notestash-Admin\bin\Microsoft.Owin.Security.Microsof
 C:\Projects\Notestash-Admin\Notestash-Admin\obj\Debug\Notestash-Admin.csprojResolveAssemblyReference.cache
 C:\Projects\Notestash-Admin\Notestash-Admin\obj\Debug\Notestash-Admin.dll
 C:\Projects\Notestash-Admin\Notestash-Admin\obj\Debug\Notestash-Admin.pdb
+C:\Projects\Notestash-Admin\Notestash-Admin\bin\SecurityDriven.Inferno.dll
+C:\Projects\Notestash-Admin\Notestash-Admin\bin\SecurityDriven.Inferno.xml
