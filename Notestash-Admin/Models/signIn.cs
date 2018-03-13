@@ -8,11 +8,15 @@ namespace Notestash_Admin.Models
 {
     public class signIn
     {
-        [Required]
-        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")]
+        [Required(ErrorMessage = "Email Required!", AllowEmptyStrings = false)]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Password Required!", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Display(Name = "Remember Me")]
+        public bool RememberMe { get; set; }
     }
 }

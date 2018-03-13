@@ -15,16 +15,16 @@ namespace Notestash_Admin.Models
     public class signUp
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Full Name Required", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Full Name Required!", AllowEmptyStrings = false)]
         public string FullName { get; set; }
-        [Required(ErrorMessage = "Email Required", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Email Required!", AllowEmptyStrings = false)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Password Required", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Password Required!", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
         [StringLength(15, MinimumLength = 6, ErrorMessage = "Password should be between 6 to 15 characters!")]
         public string Password { get; set; }
-        [Required(ErrorMessage = "Confirm Password Required", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Confirm Password Required!", AllowEmptyStrings = false)]
         [DataType(DataType.Password)]
         [StringLength(15, MinimumLength = 6, ErrorMessage = "Password should be between 6 to 15 characters!")]
         [Compare("Password")]
@@ -64,7 +64,7 @@ namespace Notestash_Admin.Models
                 objTblUser.Salt = salt;
                 objTblUser.ProfilePicture = null;
                 objTblUser.IsEmailVerified = 0;
-                objTblUser.ActivationCode = Guid.NewGuid().ToString();
+                objTblUser.ActivationCode = Guid.NewGuid();
 
                 using (Notestash_Database_Entities db = new Notestash_Database_Entities())
                 {
@@ -74,7 +74,7 @@ namespace Notestash_Admin.Models
                     {
                         db.tblUsers.Add(objTblUser);
                         db.SaveChanges();
-                        return objUser.Email;
+                        return objUser.Email+" "+objTblUser.ActivationCode.ToString();
                     }
                     else
                     {
