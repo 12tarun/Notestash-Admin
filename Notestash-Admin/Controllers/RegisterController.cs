@@ -12,7 +12,6 @@ using PBKDF2 = SecurityDriven.Inferno.Kdf.PBKDF2;
 using SecurityDriven.Inferno.Extensions;
 using static SecurityDriven.Inferno.SuiteB;
 using static SecurityDriven.Inferno.Utils;
-using System.Web.Security;
 
 namespace Notestash_Admin.Controllers
 {
@@ -125,7 +124,7 @@ namespace Notestash_Admin.Controllers
         // POST: Login user.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(signIn User)
+        public ActionResult SignIn(signIn User, string ReturnUrl = "")
         {
             try
             {
@@ -163,14 +162,34 @@ namespace Notestash_Admin.Controllers
                         cookie.Expires = DateTime.Now.AddMinutes(timeout);
                         cookie.HttpOnly = true;
                         Response.Cookies.Add(cookie);
+
+                        if (Url.IsLocalUrl(ReturnUrl))
+                        {
+                            return Redirect(ReturnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("WrongCredentials", "Wrong Credentials!");
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                ModelState.AddModelError("BadRequest", "Invalid Request!");
             }
             return View();
+        }
+        // Logout
+        [Authorize]
+        public ActionResult SignOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("SignIn", "Register");
         }
     }
 }
