@@ -3,6 +3,17 @@
     ViewBag.Title = "User_Data";
 }
 
+Welcome @HttpContext.Current.User.Identity.Name
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("SignOut", "Login", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+    }
+}
+
+
 <h2>User Data</h2>
 
 <table class="table">

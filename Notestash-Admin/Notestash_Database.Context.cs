@@ -36,6 +36,6 @@ namespace Notestash_Admin
         public virtual DbSet<tblPreference> tblPreferences { get; set; }
         public virtual DbSet<tblTemplate> tblTemplates { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
-        public virtual DbSet<tblUserStatus> tblUserStatus { get; set; }
+        public virtual DbSet<tblRole> tblRoles { get; set; }
     }
 }

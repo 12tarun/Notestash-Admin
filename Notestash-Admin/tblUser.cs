@@ -35,6 +35,9 @@ namespace Notestash_Admin
         public byte[] ProfilePicture { get; set; }
         public Nullable<System.Guid> ActivationCode { get; set; }
         public Nullable<int> IsEmailVerified { get; set; }
+        public Nullable<System.DateTime> Created_at { get; set; }
+        public Nullable<System.Guid> forgotPasswordCode { get; set; }
+        public Nullable<int> AdminOrUser { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblComment> tblComments { get; set; }
@@ -52,5 +55,6 @@ namespace Notestash_Admin
         public virtual ICollection<tblPreference> tblPreferences { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblTemplate> tblTemplates { get; set; }
+        public virtual tblRole tblRole { get; set; }
     }
 }

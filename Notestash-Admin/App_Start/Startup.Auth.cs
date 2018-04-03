@@ -25,7 +25,7 @@ namespace Notestash_Admin
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Register/SignIn"),
+                LoginPath = new PathString("/Login/SignIn"),
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.

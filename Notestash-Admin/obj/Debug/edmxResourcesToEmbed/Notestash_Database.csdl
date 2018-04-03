@@ -121,13 +121,10 @@
     <NavigationProperty Name="tblNotes" Relationship="Self.FK_tblNotes_tblUser" FromRole="tblUser" ToRole="tblNotes" />
     <NavigationProperty Name="tblPreferences" Relationship="Self.FK_tblPreferences_tblPreferences" FromRole="tblUser" ToRole="tblPreferences" />
     <NavigationProperty Name="tblTemplates" Relationship="Self.FK_tblTemplate_tblUser" FromRole="tblUser" ToRole="tblTemplate" />
-  </EntityType>
-  <EntityType Name="tblUserStatus">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Created_at" Type="DateTime" Precision="3" />
+    <Property Name="forgotPasswordCode" Type="Guid" />
+    <Property Name="AdminOrUser" Type="Int32" />
+    <NavigationProperty Name="tblRole" Relationship="Model.FK_tblUser_tblRole" FromRole="tblUser" ToRole="tblRole" />
   </EntityType>
   <Association Name="FK_tblPreferences_tblCategory">
     <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1" />
@@ -253,7 +250,6 @@
     <EntitySet Name="tblPreferences" EntityType="Self.tblPreference" />
     <EntitySet Name="tblTemplates" EntityType="Self.tblTemplate" />
     <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
-    <EntitySet Name="tblUserStatus" EntityType="Model.tblUserStatus" />
     <AssociationSet Name="FK_tblPreferences_tblCategory" Association="Self.FK_tblPreferences_tblCategory">
       <End Role="tblCategory" EntitySet="tblCategories" />
       <End Role="tblPreferences" EntitySet="tblPreferences" />
@@ -294,5 +290,30 @@
       <End Role="tblCategory" EntitySet="tblCategories" />
       <End Role="tblNotes" EntitySet="tblNotes" />
     </AssociationSet>
+    <EntitySet Name="tblRoles" EntityType="Model.tblRole" />
+    <AssociationSet Name="FK_tblUser_tblRole" Association="Model.FK_tblUser_tblRole">
+      <End Role="tblRole" EntitySet="tblRoles" />
+      <End Role="tblUser" EntitySet="tblUsers" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="tblRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblUsers" Relationship="Model.FK_tblUser_tblRole" FromRole="tblRole" ToRole="tblUser" />
+  </EntityType>
+  <Association Name="FK_tblUser_tblRole">
+    <End Type="Model.tblRole" Role="tblRole" Multiplicity="0..1" />
+    <End Type="Model.tblUser" Role="tblUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tblUser">
+        <PropertyRef Name="AdminOrUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

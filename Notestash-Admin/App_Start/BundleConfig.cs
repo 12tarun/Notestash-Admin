@@ -24,7 +24,7 @@ namespace Notestash_Admin
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/Bootstrap-Lumen.css",
                       "~/Content/site.css"));
         }
     }

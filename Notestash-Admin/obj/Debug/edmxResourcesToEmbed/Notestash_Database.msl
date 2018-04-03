@@ -103,6 +103,9 @@
     <EntitySetMapping Name="tblUsers">
       <EntityTypeMapping TypeName="Model.tblUser">
         <MappingFragment StoreEntitySet="tblUser">
+          <ScalarProperty Name="AdminOrUser" ColumnName="AdminOrUser" />
+          <ScalarProperty Name="forgotPasswordCode" ColumnName="forgotPasswordCode" />
+          <ScalarProperty Name="Created_at" ColumnName="Created_at" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="FullName" ColumnName="FullName" />
           <ScalarProperty Name="Email" ColumnName="Email" />
@@ -114,14 +117,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tblUserStatus">
-      <EntityTypeMapping TypeName="Model.tblUserStatus">
-        <MappingFragment StoreEntitySet="tblUserStatus">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <AssociationSetMapping Name="tblJoinCategoryNote" TypeName="Model.tblJoinCategoryNote" StoreEntitySet="tblJoinCategoryNote">
       <EndProperty Name="tblCategory">
         <ScalarProperty Name="Id" ColumnName="CategoryId" />
@@ -130,5 +125,13 @@
         <ScalarProperty Name="Id" ColumnName="NoteId" />
       </EndProperty>
     </AssociationSetMapping>
+    <EntitySetMapping Name="tblRoles">
+      <EntityTypeMapping TypeName="Model.tblRole">
+        <MappingFragment StoreEntitySet="tblRole">
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

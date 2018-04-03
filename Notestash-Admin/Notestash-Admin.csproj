@@ -216,6 +216,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\UserDataController.cs" />
@@ -272,17 +273,18 @@
     <Compile Include="tblPreference.cs">
       <DependentUpon>Notestash_Database.tt</DependentUpon>
     </Compile>
+    <Compile Include="tblRole.cs">
+      <DependentUpon>Notestash_Database.tt</DependentUpon>
+    </Compile>
     <Compile Include="tblTemplate.cs">
       <DependentUpon>Notestash_Database.tt</DependentUpon>
     </Compile>
     <Compile Include="tblUser.cs">
       <DependentUpon>Notestash_Database.tt</DependentUpon>
     </Compile>
-    <Compile Include="tblUserStatus.cs">
-      <DependentUpon>Notestash_Database.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Bootstrap-Lumen.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -360,9 +362,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\UserData\User_Data.cshtml" />
-    <Content Include="Views\Register\SignUp.cshtml" />
     <Content Include="Views\Register\VerifyAccount.cshtml" />
-    <Content Include="Views\Register\SignIn.cshtml" />
+    <Content Include="Views\Login\signIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

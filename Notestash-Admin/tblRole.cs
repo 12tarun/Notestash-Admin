@@ -12,9 +12,18 @@ namespace Notestash_Admin
     using System;
     using System.Collections.Generic;
     
-    public partial class tblUserStatus
+    public partial class tblRole
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tblRole()
+        {
+            this.tblUsers = new HashSet<tblUser>();
+        }
+    
         public int Id { get; set; }
-        public string Status { get; set; }
+        public string Role { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblUser> tblUsers { get; set; }
     }
 }
