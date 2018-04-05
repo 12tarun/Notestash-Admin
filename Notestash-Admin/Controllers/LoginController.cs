@@ -20,6 +20,11 @@ namespace Notestash_Admin.Controllers
         [HttpGet]
         public ActionResult signIn()
         {
+            if (Session["Login"] != null)
+            {
+                return RedirectToAction("User_Data", "UserData");
+            }
+
             return View();
         }
 
@@ -28,11 +33,6 @@ namespace Notestash_Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SignIn(signIn User)
         {
-            //if (Session["Login"] != null)
-            //{
-            //    return RedirectToAction("User_Data", "UserData");
-            //}
-
             try
             {
                 using (Notestash_Database_Entities db = new Notestash_Database_Entities())
@@ -62,7 +62,7 @@ namespace Notestash_Admin.Controllers
                         if (userCredentials != null)
                         {
                             Session["Login"] = user.Email;
-                            ViewBag.Login = Session["Login"];
+                            //ViewBag.Login = Session["Login"];
                             //int timeout = User.RememberMe ? 52560 : 20;
                             //var ticket = new FormsAuthenticationTicket(User.Email, User.RememberMe, timeout);
                             //string encrypted = FormsAuthentication.Encrypt(ticket);
@@ -92,11 +92,8 @@ namespace Notestash_Admin.Controllers
         }
 
         // Logout
-     //   [Authorize]
         public ActionResult SignOut()
         {
-            //  FormsAuthentication.SignOut();
-
             Session["Login"] = null;
             return RedirectToAction("SignIn", "Login");
         }

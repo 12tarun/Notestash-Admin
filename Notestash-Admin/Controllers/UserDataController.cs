@@ -9,15 +9,13 @@ namespace Notestash_Admin.Controllers
 {
     public class UserDataController : Controller
     {
-
-        // Display user information
-     //   [Authorize]
+        [HttpGet]
         public ActionResult User_Data()
         {
-            //if (Request.Cookies[FormsAuthentication.FormsCookieName].Value != null)
-            //{
-            //    return RedirectToAction("User_Data", "UserData");
-            //}
+            if(Session["Login"] == null)
+            {
+                return RedirectToAction("SignIn", "Login");
+            }
 
             using (Notestash_Database_Entities db = new Notestash_Database_Entities())
             {
