@@ -28,11 +28,17 @@ namespace Notestash_Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SignIn(signIn User)
         {
+            //if (Session["Login"] != null)
+            //{
+            //    return RedirectToAction("User_Data", "UserData");
+            //}
+
             try
             {
                 using (Notestash_Database_Entities db = new Notestash_Database_Entities())
                 {
                     var user = db.tblUsers.FirstOrDefault(e => e.Email.Equals(User.Email));
+                   
                     if (user != null)
                     {
                         var sha384Factory = HmacFactory;
@@ -55,13 +61,15 @@ namespace Notestash_Admin.Controllers
 
                         if (userCredentials != null)
                         {
-                            int timeout = User.RememberMe ? 52560 : 20;
-                            var ticket = new FormsAuthenticationTicket(User.Email, User.RememberMe, timeout);
-                            string encrypted = FormsAuthentication.Encrypt(ticket);
-                            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                            cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                            cookie.HttpOnly = true;
-                            Response.Cookies.Add(cookie);
+                            Session["Login"] = user.Email;
+                            ViewBag.Login = Session["Login"];
+                            //int timeout = User.RememberMe ? 52560 : 20;
+                            //var ticket = new FormsAuthenticationTicket(User.Email, User.RememberMe, timeout);
+                            //string encrypted = FormsAuthentication.Encrypt(ticket);
+                            //var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                            //cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                            //cookie.HttpOnly = true;
+                            //Response.Cookies.Add(cookie);
                             return RedirectToAction("User_Data", "UserData");                           
                         }
                         else
@@ -84,10 +92,12 @@ namespace Notestash_Admin.Controllers
         }
 
         // Logout
-        [Authorize]
+     //   [Authorize]
         public ActionResult SignOut()
         {
-            FormsAuthentication.SignOut();
+            //  FormsAuthentication.SignOut();
+
+            Session["Login"] = null;
             return RedirectToAction("SignIn", "Login");
         }
     }

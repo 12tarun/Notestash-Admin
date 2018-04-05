@@ -3,59 +3,65 @@
     ViewBag.Title = "User_Data";
 }
 
-Welcome @HttpContext.Current.User.Identity.Name
+@*Welcome @HttpContext.Current.User.Identity.Name
 
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("SignOut", "Login", FormMethod.Post, new { id = "logoutForm" }))
+    @if (Request.IsAuthenticated)
     {
-        <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
-    }
-}
-
-
-<h2>User Data</h2>
-
-<table class="table">
-    <thead class="thead-inverse">
-        <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                FULL NAME
-            </th>
-            <th>
-                EMAIL
-            </th>
-            <th>
-                Is Email Verified
-            </th>
-            <th>
-                PROFILE PICTURE
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+        using (Html.BeginForm("SignOut", "Login", FormMethod.Post, new { id = "logoutForm" }))
         {
-            <tr>
-                <td>
-                    @item.Id
-                </td>
-                <td>
-                    @item.FullName
-                </td>
-                <td>
-                    @item.Email
-                </td>
-                <td>
-                    @item.IsEmailVerified
-                </td>
-                <td>
-                    @item.ProfilePicture
-                </td>
-            </tr>
+            <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
         }
-    </tbody>
-</table>
+    }*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <input type="button" value="Logout" onclick="location.href='@Url.Action("SignOut", "Login")'" />
+
+        <h2>User Data</h2>
+
+        <table class="table">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        FULL NAME
+                    </th>
+                    <th>
+                        EMAIL
+                    </th>
+                    <th>
+                        Is Email Verified
+                    </th>
+                    <th>
+                        PROFILE PICTURE
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Id
+                        </td>
+                        <td>
+                            @item.FullName
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.IsEmailVerified
+                        </td>
+                        <td>
+                            @item.ProfilePicture
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+}

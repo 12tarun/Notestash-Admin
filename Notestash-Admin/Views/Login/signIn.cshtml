@@ -1,5 +1,12 @@
 ﻿@model Notestash_Admin.Models.signIn
 
+
+
+@if(ViewBag.Login != null)
+{
+    Response.Redirect("~/UserData/User_Data");
+}
+
 @{
     ViewBag.Title = "signIn";
     Layout = "";
@@ -17,7 +24,7 @@
             <h3 class="navbar-brand" href="#" style="margin-left:33%">NOTESTASH  ADMIN  PANEL</h3>
         </nav>
 
-        <div class="card-body" >
+        <div class="card-body">
 
             @using (Html.BeginForm())
             {
@@ -32,8 +39,13 @@
                             <div class="card text-white bg-dark mb-3" style="max-width: 20rem; float:right">
                                 <div class="card-header">NOTESTASH</div>
                                 <div class="card-body">
-                                    <h5 class="card-title">A big collection of notes on various topics and a great tool for creating and sharing notes...</h5>
-                                    <p class="card-text"></p>
+                                    <h5 class="card-title"></h5>
+                                    <p class="card-text">
+                                        Notestash is an easy to use android application which can create notes
+                                        just by scanning and selecting a handwritten or printed text, converting
+                                        them in a font of user’s choice and saving them. It will thus create notes
+                                        smartly thereby saving time and paper.
+                                    </p>
                                 </div>
                             </div>
                             <br />
@@ -42,7 +54,7 @@
                             </div>
                             <div>
                                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                                
+
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                             <br />
