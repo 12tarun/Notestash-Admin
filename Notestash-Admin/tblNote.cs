@@ -18,6 +18,7 @@ namespace Notestash_Admin
         public tblNote()
         {
             this.tblCategories = new HashSet<tblCategory>();
+            this.tblTemplates = new HashSet<tblTemplate>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,7 @@ namespace Notestash_Admin
         public virtual tblUser tblUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tblCategory> tblCategories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tblTemplate> tblTemplates { get; set; }
     }
 }

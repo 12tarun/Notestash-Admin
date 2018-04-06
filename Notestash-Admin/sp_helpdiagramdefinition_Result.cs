@@ -10,14 +10,10 @@
 namespace Notestash_Admin
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class tblTemplate
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public int Id { get; set; }
-        public string Template { get; set; }
-        public int NoteId { get; set; }
-    
-        public virtual tblNote tblNote { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

@@ -84,6 +84,7 @@ namespace Notestash_Admin.Models
             }
             catch (Exception ex)
             {
+                string s = ex.ToString();
                 return "error";              
             }
         }

@@ -248,10 +248,10 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tblTemplate_tblUser">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
+          <End Role="tblNotes" Type="Self.tblNotes" Multiplicity="1" />
           <End Role="tblTemplate" Type="Self.tblTemplate" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="tblUser">
+            <Principal Role="tblNotes">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="tblTemplate">
@@ -271,6 +271,37 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
@@ -331,7 +362,7 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
             <End Role="tblPreferences" EntitySet="tblPreferences" />
           </AssociationSet>
           <AssociationSet Name="FK_tblTemplate_tblUser" Association="Self.FK_tblTemplate_tblUser">
-            <End Role="tblUser" EntitySet="tblUser" />
+            <End Role="tblNotes" EntitySet="tblNotes" />
             <End Role="tblTemplate" EntitySet="tblTemplate" />
           </AssociationSet>
           <AssociationSet Name="FK_tblUser_tblRole" Association="Self.FK_tblUser_tblRole">
@@ -424,6 +455,7 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tblUser" Relationship="Self.FK_tblNotes_tblUser" FromRole="tblNotes" ToRole="tblUser" />
           <NavigationProperty Name="tblCategories" Relationship="Self.tblJoinCategoryNote" FromRole="tblNotes" ToRole="tblCategory" />
+          <NavigationProperty Name="tblTemplates" Relationship="Model.FK_tblTemplate_tblUser1" FromRole="tblNote" ToRole="tblTemplate" />
         </EntityType>
         <EntityType Name="tblPreference">
           <Key>
@@ -442,7 +474,7 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Template" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NoteId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tblUser" Relationship="Self.FK_tblTemplate_tblUser" FromRole="tblTemplate" ToRole="tblUser" />
+          <NavigationProperty Name="tblNote" Relationship="Model.FK_tblTemplate_tblUser1" FromRole="tblTemplate" ToRole="tblNote" />
         </EntityType>
         <EntityType Name="tblUser">
           <Key>
@@ -463,7 +495,6 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
           <NavigationProperty Name="tblLikes" Relationship="Self.FK_tblLike_tblLike" FromRole="tblUser" ToRole="tblLike" />
           <NavigationProperty Name="tblNotes" Relationship="Self.FK_tblNotes_tblUser" FromRole="tblUser" ToRole="tblNotes" />
           <NavigationProperty Name="tblPreferences" Relationship="Self.FK_tblPreferences_tblPreferences" FromRole="tblUser" ToRole="tblPreferences" />
-          <NavigationProperty Name="tblTemplates" Relationship="Self.FK_tblTemplate_tblUser" FromRole="tblUser" ToRole="tblTemplate" />
           <Property Name="Created_at" Type="DateTime" Precision="3" />
           <Property Name="forgotPasswordCode" Type="Guid" />
           <Property Name="AdminOrUser" Type="Int32" />
@@ -565,18 +596,6 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tblTemplate_tblUser">
-          <End Role="tblUser" Type="Self.tblUser" Multiplicity="1" />
-          <End Role="tblTemplate" Type="Self.tblTemplate" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tblUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tblTemplate">
-              <PropertyRef Name="NoteId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="tblJoinCategoryNote">
           <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="*" />
           <End Role="tblNotes" Type="Self.tblNote" Multiplicity="*" />
@@ -625,10 +644,6 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
             <End Role="tblUser" EntitySet="tblUsers" />
             <End Role="tblPreferences" EntitySet="tblPreferences" />
           </AssociationSet>
-          <AssociationSet Name="FK_tblTemplate_tblUser" Association="Self.FK_tblTemplate_tblUser">
-            <End Role="tblUser" EntitySet="tblUsers" />
-            <End Role="tblTemplate" EntitySet="tblTemplates" />
-          </AssociationSet>
           <AssociationSet Name="tblJoinCategoryNote" Association="Self.tblJoinCategoryNote">
             <End Role="tblCategory" EntitySet="tblCategories" />
             <End Role="tblNotes" EntitySet="tblNotes" />
@@ -638,6 +653,40 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
             <End Role="tblRole" EntitySet="tblRoles" />
             <End Role="tblUser" EntitySet="tblUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_tblTemplate_tblUser1" Association="Model.FK_tblTemplate_tblUser1">
+            <End Role="tblNote" EntitySet="tblNotes" />
+            <End Role="tblTemplate" EntitySet="tblTemplates" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Model.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Model.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
         <EntityType Name="tblRole">
           <Key>
@@ -659,6 +708,29 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblTemplate_tblUser1">
+          <End Type="Model.tblNote" Role="tblNote" Multiplicity="1" />
+          <End Type="Model.tblTemplate" Role="tblTemplate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblNote">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblTemplate">
+              <PropertyRef Name="NoteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -797,6 +869,30 @@ warning 6002: The table/view 'Notestash Database.dbo.tblJoinCategoryNote' does n
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Model.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Model.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Model.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Model.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Model.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Model.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Model.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

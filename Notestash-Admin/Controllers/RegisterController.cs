@@ -63,6 +63,7 @@ namespace Notestash_Admin.Controllers
             }
             return View(User);
         }
+
         // Send email verification link.
         [NonAction]
         public void SendVerificationLink(string Email, string ActivationCode)

@@ -3,15 +3,25 @@
     ViewBag.Title = "User_Data";
 }
 
+<style>
+    .make-it-slow:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+    #tblBodyRow:hover {
+    background-color: #EEE;
+    /*top: -10px;*/
+}
+
+</style>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <input type="button" value="Logout" onclick="location.href='@Url.Action("SignOut", "Login")'" />
-
         <h2>User Data</h2>
 
-        <table class="table">
+        <table id="my-table" class="table">
             <thead class="thead-inverse">
                 <tr>
                     <th>
@@ -24,17 +34,23 @@
                         EMAIL
                     </th>
                     <th>
-                        Is Email Verified
+                        IS EMAIL VERIFIED
                     </th>
                     <th>
                         PROFILE PICTURE
                     </th>
+                    <th>
+                        CREATED AT
+                    </th>
+                    <th>
+                        USER(1) OR ADMIN(2)
+                    </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tblUserData">
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr id="tblBodyRow" class="make-it-slow" onclick="location.href='@Url.Action("SignOut", "Login")'" style="cursor:pointer;">
                         <td>
                             @item.Id
                         </td>
@@ -49,6 +65,12 @@
                         </td>
                         <td>
                             @item.ProfilePicture
+                        </td>
+                        <td>
+                            @item.Created_at
+                        </td>
+                        <td>
+                            @item.AdminOrUser
                         </td>
                     </tr>
                 }
