@@ -9,6 +9,8 @@ namespace Notestash_Admin.Controllers
 {
     public class UserDataController : Controller
     {
+
+     // Show user data
         [HttpGet]
         public ActionResult User_Data()
         {
@@ -22,6 +24,13 @@ namespace Notestash_Admin.Controllers
                 var users = db.tblUsers.ToList();
                 return View(users);
             }             
+        }
+
+        [HttpGet]
+        public ActionResult SelectedUser(int id)
+        {
+            // working till here fetch the info from db of selected user now.....
+            return View();
         }
     }
 }

@@ -3,6 +3,10 @@
     ViewBag.Title = "User_Data";
 }
 
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+</head>
+
 <style>
     .make-it-slow:hover {
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -17,9 +21,12 @@
 
 @using (Html.BeginForm())
 {
+    int i = 1;
+
     @Html.AntiForgeryToken()
 
-        <h2>User Data</h2>
+    <br />
+        <h2>USERS</h2>
 
         <table id="my-table" class="table">
             <thead class="thead-inverse">
@@ -48,11 +55,13 @@
                 </tr>
             </thead>
             <tbody id="tblUserData">
+                
                 @foreach (var item in Model)
                 {
-                    <tr id="tblBodyRow" class="make-it-slow" onclick="location.href='@Url.Action("SignOut", "Login")'" style="cursor:pointer;">
+                    
+                    <tr id="tblBodyRow" class="make-it-slow" onclick="location.href='@Url.Action("SelectedUser", "UserData", new { id = item.Id })'" style="cursor:pointer;">
                         <td>
-                            @item.Id
+                            @i
                         </td>
                         <td>
                             @item.FullName
@@ -73,6 +82,7 @@
                             @item.AdminOrUser
                         </td>
                     </tr>
+                    i++;
                 }
             </tbody>
         </table>

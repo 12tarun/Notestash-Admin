@@ -32,7 +32,7 @@
                             <div class="card text-white bg-dark mb-3" style="max-width: 20rem; float:right">
                                 <div class="card-header">NOTESTASH</div>
                                 <div class="card-body">
-                                    <h5 class="card-title"></h5>
+                                    @*<h5 class="card-title"></h5>*@
                                     <p class="card-text">
                                         Notestash is an easy to use android application which can create notes
                                         just by scanning and selecting a handwritten or printed text, converting
@@ -72,11 +72,12 @@
                                 <input type="submit" value="LOGIN" class="btn btn-secondary" />
                             </div>
                             <br />
-                            @Html.ValidationMessage("WrongCredentials", new { @class = "text-danger" })
-                            @Html.ValidationMessage("BadRequest", new { @class = "text-danger" })
                             <div>
                                 @Html.ActionLink("Forgot password?", "forgotPassword")
                             </div>
+                            <br />
+                            @Html.ValidationMessage("WrongCredentials", new { @class = "text-danger" })
+                            @Html.ValidationMessage("BadRequest", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>

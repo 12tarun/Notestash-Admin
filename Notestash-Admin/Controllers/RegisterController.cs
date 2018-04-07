@@ -23,6 +23,11 @@ namespace Notestash_Admin.Controllers
         [HttpGet]
         public ActionResult SignUp()
         {
+            if (Session["Login"] == null)
+            {
+                return RedirectToAction("SignIn", "Login");
+            }
+
             return View();
         }
         // POST: Add an Admin through registration page.
