@@ -96,6 +96,7 @@ namespace Notestash_Admin.Controllers
             return View();
         }
 
+     // Forgot Password
         [HttpGet]
         public ActionResult forgotPassword()
         {
@@ -107,7 +108,7 @@ namespace Notestash_Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("BadRequest", "Registration failed!");
+                ModelState.AddModelError("BadRequest", "Invalid Request!");
             }
                 
             try
@@ -124,11 +125,12 @@ namespace Notestash_Admin.Controllers
             catch (Exception ex)
             {
                 string s = ex.Message;
-                ModelState.AddModelError("BadRequest", "Registration failed!");
+                ModelState.AddModelError("BadRequest", "Invalid Request!");
             }
             return View();
         }
 
+     // Email for changing password
         [NonAction]
         public void changePasswordEmail(string Email, string passwordChangeKey)
         {
@@ -173,40 +175,44 @@ namespace Notestash_Admin.Controllers
             {
                 using (Notestash_Database_Entities db = new Notestash_Database_Entities())
                 {
-                    var passwordChanged = db.tblUsers.Where(e => e.forgotPasswordCode == new Guid(id)).FirstOrDefault();
-                    string newPass = pass.newPassword;
 
-                    var sha384Factory = HmacFactory;
-                    var random = new CryptoRandom();
-
-                    byte[] derivedKey;
-                    string hashedPassword = null;
-                    string passwordText = newPass;
-
-                    byte[] passwordBytes = SafeUTF8.GetBytes(passwordText);
-                    var salt = random.NextBytes(384 / 8);
-
-                    using (var pbkdf2 = new PBKDF2(sha384Factory, passwordBytes, salt, 256 * 1000))
-                        derivedKey = pbkdf2.GetBytes(384 / 8);
-
-
-                    using (var hmac = sha384Factory())
+                    if(pass.newPassword.Equals(pass.confirmNewPassword) && pass.newPassword.Length >= 6 && pass.newPassword.Length <= 15)
                     {
-                        hmac.Key = derivedKey;
-                        hashedPassword = hmac.ComputeHash(passwordBytes).ToBase16();
-                    }
+                        var passwordChanged = db.tblUsers.Where(e => e.forgotPasswordCode == new Guid(id)).FirstOrDefault();
+                        string newPass = pass.newPassword;
 
-                    passwordChanged.Password = hashedPassword;
-                    passwordChanged.Salt = salt;
-                    passwordChanged.forgotPasswordCode = null;
-                    db.SaveChanges();
-                 //   return Request.CreateResponse(HttpStatusCode.OK, "Password changed successfully!");
+                        var sha384Factory = HmacFactory;
+                        var random = new CryptoRandom();
+
+                        byte[] derivedKey;
+                        string hashedPassword = null;
+                        string passwordText = newPass;
+
+                        byte[] passwordBytes = SafeUTF8.GetBytes(passwordText);
+                        var salt = random.NextBytes(384 / 8);
+
+                        using (var pbkdf2 = new PBKDF2(sha384Factory, passwordBytes, salt, 256 * 1000))
+                            derivedKey = pbkdf2.GetBytes(384 / 8);
+
+
+                        using (var hmac = sha384Factory())
+                        {
+                            hmac.Key = derivedKey;
+                            hashedPassword = hmac.ComputeHash(passwordBytes).ToBase16();
+                        }
+
+                        passwordChanged.Password = hashedPassword;
+                        passwordChanged.Salt = salt;
+                        passwordChanged.forgotPasswordCode = null;
+                        db.SaveChanges();
+                        ModelState.AddModelError("Changed", "Password changed successfully!");
+                    }
                 }
             }
             catch (Exception ex)
             {
                 string s = ex.Message;
-               // return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Error occurred, please try again!");
+                ModelState.AddModelError("BadRequest", "Error occurred, please try again!");
             }
             return View();
         }
