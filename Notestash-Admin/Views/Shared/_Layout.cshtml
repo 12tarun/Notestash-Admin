@@ -20,35 +20,7 @@
 <body style="padding-top:0px">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <h4 class="navbar-brand" style="margin-left:10%">NOTESTASH ADMIN PANEL</h4>
-        <h4><i class="fas fa-user-plus" title="ADD ADMIN" style="color:#fff;cursor:pointer;" data-toggle="modal" data-target="#myModal"></i></h4>
-        <!-- The Modal -->
-        <div class="modal fade" id="myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">SIGN UP</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        @*@Html.Action("SignUp", "Register")*@
-                        @Html.Action("SignUp", "Register")
-                        
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
+        <h4><i class="fas fa-user-plus" title="ADD ADMIN" style="color:#fff;cursor:pointer;" onclick="location.href='@Url.Action("SignUp", "Register")'" ></i></h4>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" style="">
             <span class="navbar-toggler-icon"></span>
@@ -63,9 +35,37 @@
                     <h5><a class="nav-link" href="#">NOTES</a></h5>
                 </li>
                 <li class="nav-item">
-                    <h5><a class="nav-link" href="#">ABOUT</a></h5>
+                    <h5><a class="nav-link" href="#" style="cursor:pointer;" data-toggle="modal" data-target="#myModal">ABOUT</a></h5>
                 </li>
             </ul>
+
+            <!-- The Modal -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">SIGN UP</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            @*@Html.Action("SignUp", "Register")*@
+
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit" style="margin-right:10px">Search</button>

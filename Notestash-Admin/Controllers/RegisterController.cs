@@ -12,6 +12,8 @@ using PBKDF2 = SecurityDriven.Inferno.Kdf.PBKDF2;
 using SecurityDriven.Inferno.Extensions;
 using static SecurityDriven.Inferno.SuiteB;
 using static SecurityDriven.Inferno.Utils;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Notestash_Admin.Controllers
 {
@@ -23,13 +25,13 @@ namespace Notestash_Admin.Controllers
         {
             return View();
         }
-        // POST: Add a user through registration page.
+        // POST: Add an Admin through registration page.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SignUp([Bind(Exclude = "IsEmailVerified,ActivationCode,ProfilePicture")]signUp User)
         {
             bool Status = false;
-            string message = "";
+            bool Invalid = false;
 
             if (!ModelState.IsValid)
             {
@@ -46,6 +48,8 @@ namespace Notestash_Admin.Controllers
                 }
                 else if (created == "error")
                 {
+                    Invalid = true;
+                    ViewBag.Invalid = Invalid;
                     ModelState.AddModelError("BadRequest", "Registration failed!");
                 }
                 else
@@ -55,9 +59,8 @@ namespace Notestash_Admin.Controllers
                     string passedEmail = created.Substring(0, i);
                     string passedCode = created.Substring((i + 1), sizeOfCode);
                     SendVerificationLink(passedEmail, passedCode);
-                    message = "Successful Registration! Activation Code has been sent to your email id.";
-                    Status = true;
-                    ViewBag.Message = message;
+                    ModelState.AddModelError("Success", "Admin has been added successfully! Activation Code has been sent to his email id.");
+                    Status = true;             
                     ViewBag.Status = Status;
                 }
             }
@@ -94,103 +97,47 @@ namespace Notestash_Admin.Controllers
             })
                 smtp.Send(message);
         }
+
         // GET: Verify account on clicking on activation code sent in email.
         [HttpGet]
         public ActionResult VerifyAccount(string id)
         {
-            bool Status = false;
+           // bool Status = false;
             using (Notestash_Database_Entities db = new Notestash_Database_Entities())
             {
+                bool deleted = false;
+                bool expired = false;
+                bool activated = false;
                 var activate = db.tblUsers.Where(e => e.ActivationCode == new Guid(id)).FirstOrDefault();
-                if (activate != null)
+                if (activate == null)
                 {
-                    activate.IsEmailVerified = 1;
-                    db.SaveChanges();
-                    Status = true;
+                    deleted = true;
+                    ViewBag.Deleted = deleted;
+                    ModelState.AddModelError("Deleted", "Account deleted! Create Again!");
+                    return View();
                 }
                 else
                 {
-                    ViewBag.Message = "Invalid Request!";
+                    DateTime expire = activate.Created_at.Value.AddDays(1);
+                    DateTime present = DateTime.Now;
+                    if (present >= expire)
+                    {
+                        expired = true;
+                        ViewBag.Expired = expired;
+                        ModelState.AddModelError("Expired", "Link Expired! Register Again!");
+                        return View();
+                    }
+                    else
+                    {
+                        activate.IsEmailVerified = 1;
+                        db.SaveChanges();
+                        activated = true;
+                        ViewBag.Activated = activated;
+                        ModelState.AddModelError("Activated", "Congratulations! Account activated! You are also a Notestash admin now.");
+                        return View();
+                    }
                 }
-            }
-            ViewBag.Status = Status;
-            return View();
-        }
-        // GET: Display login page.
-        //    [HttpGet]
-        //   public ActionResult SignIn()
-        // {
-        //     return View();
-        // }
-        // POST: Login user.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult SignIn(signIn User, string ReturnUrl = "")
-        //{
-        //    try
-        //    {
-        //        using (Notestash_Database_Entities db = new Notestash_Database_Entities())
-        //        {
-        //            var user = db.tblUsers.FirstOrDefault(e => e.Email.Equals(User.Email));
-
-        //            var sha384Factory = HmacFactory;
-        //            byte[] derivedKey;
-        //            string hashedPassword = null;
-        //            string suppliedPassword = User.Password;
-        //            byte[] passwordBytes = SafeUTF8.GetBytes(suppliedPassword);
-
-        //            using (var pbkdf2 = new PBKDF2(sha384Factory, passwordBytes, user.Salt, 256 * 1000))
-        //                derivedKey = pbkdf2.GetBytes(384 / 8);
-
-
-        //            using (var hmac = sha384Factory())
-        //            {
-        //                hmac.Key = derivedKey;
-        //                hashedPassword = hmac.ComputeHash(passwordBytes).ToBase16();
-        //            }
-
-
-
-        //            var userCredentials =
-        //                db.tblUsers.FirstOrDefault(e => e.Email.Equals(User.Email) && e.Password.Equals(hashedPassword));
-
-        //            if (userCredentials != null)
-        //            {
-        //                int timeout = User.RememberMe ? 52560 : 20;
-        //                var ticket = new FormsAuthenticationTicket(User.Email, User.RememberMe, timeout);
-        //                string encrypted = FormsAuthentication.Encrypt(ticket);
-        //                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-        //                cookie.Expires = DateTime.Now.AddMinutes(timeout);
-        //                cookie.HttpOnly = true;
-        //                Response.Cookies.Add(cookie);
-
-        //                if (Url.IsLocalUrl(ReturnUrl))
-        //                {
-        //                    return Redirect(ReturnUrl);
-        //                }
-        //                else
-        //                {
-        //                    return RedirectToAction("Index", "Home");
-        //                }
-        //            }
-        //            else
-        //            {
-        //                ModelState.AddModelError("WrongCredentials", "Wrong Credentials!");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ModelState.AddModelError("BadRequest", "Invalid Request!");
-        //    }
-        //    return View();
-        //}
-        // Logout
-        [Authorize]
-        public ActionResult SignOut()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("SignIn", "Register");
+            }          
         }
     }
 }

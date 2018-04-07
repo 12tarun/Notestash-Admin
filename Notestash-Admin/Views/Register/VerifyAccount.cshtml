@@ -1,19 +1,23 @@
 ﻿
 @{
     ViewBag.Title = "VerifyAccount";
+    Layout = "";
 }
 
-<h2>VerifyAccount</h2>
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
 
-@if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+@if (ViewBag.Deleted == true)
 {
-    <div class="alert alert-success">
-        <strong>Success! </strong>Your account has been activated successfully. Click here to @Html.ActionLink("Login", "SignIn", "Register").
-    </div>
+    <h3> @Html.ValidationMessage("Deleted", new { @class = "text-danger" }) </h3>
 }
-else
+
+@if (ViewBag.Expired == true)
 {
-    <div class="alert alert-danger">
-        <strong>Error! </strong>@ViewBag.Message
-    </div>
+    <h3> @Html.ValidationMessage("Expired", new { @class = "text-danger" }) </h3>
+}
+
+@if (ViewBag.Activated == true)
+{
+    <h3> @Html.ValidationMessage("Activated", new { @class = "text-success" })</h3>
 }

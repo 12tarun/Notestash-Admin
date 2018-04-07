@@ -31,6 +31,7 @@ namespace Notestash_Admin.Models
         public string ConfirmPassword { get; set; }
         public int IsEmailVerified { get; set; }
         public Guid ActivationCode { get; set; }
+        public int AdminOrUser { get; set; }
 
         public string Create(signUp objUser)
         {
@@ -65,9 +66,23 @@ namespace Notestash_Admin.Models
                 objTblUser.ProfilePicture = null;
                 objTblUser.IsEmailVerified = 0;
                 objTblUser.ActivationCode = Guid.NewGuid();
+                objTblUser.Created_at = DateTime.Now;
+                objTblUser.AdminOrUser = 2;
 
                 using (Notestash_Database_Entities db = new Notestash_Database_Entities())
                 {
+                    DateTime present = DateTime.Now;
+                    var userList = db.tblUsers.Where(a => a.IsEmailVerified == 0).ToList();
+                    foreach (tblUser user in userList)
+                    {
+                        DateTime expire = user.Created_at.Value.AddDays(1);
+                        if (present >= expire)
+                        {
+                            db.tblUsers.Remove(user);
+                        }
+                    }
+                    db.SaveChanges();
+
                     var existingUser = db.tblUsers.FirstOrDefault(e => e.Email.Equals(objUser.Email));
 
                     if (existingUser == null)
@@ -88,6 +103,5 @@ namespace Notestash_Admin.Models
                 return "error";              
             }
         }
-
     }
 }

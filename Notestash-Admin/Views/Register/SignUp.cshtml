@@ -2,15 +2,19 @@
 
 @{
     ViewBag.Title = "SignUp";
-    Layout = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+    <br />
+    <br />
+    <h4>SIGN UP</h4>
+    <hr />
+
     <div class="form-horizontal">
-   
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -25,6 +29,8 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
+
             </div>
         </div>
 
@@ -43,11 +49,28 @@
                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <br />
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
+
+        @if (ViewBag.Invalid == true)
+        {
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>@Html.ValidationMessage("BadRequest")</strong>
+            </div>
+        }
+
+        @if (ViewBag.Status == true)
+        {
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>@Html.ValidationMessage("Success")</strong>
+            </div>
+  
+        }
     </div>
 }

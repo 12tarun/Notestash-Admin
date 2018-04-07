@@ -370,7 +370,6 @@
     <Content Include="Views\UserData\User_Data.cshtml" />
     <Content Include="Views\Register\VerifyAccount.cshtml" />
     <Content Include="Views\Login\signIn.cshtml" />
-    <Content Include="Views\Shared\_SignUp.cshtml" />
     <Content Include="Views\Register\SignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
