@@ -58,7 +58,7 @@ namespace Notestash_Admin.Controllers
                 {
                     if(id != (int)Session["Login"])                                                // User cannot delete himself as there should be atleast one admin                                                                                                  
                     {                                                                              // if he deletes all other admins.
-                        var deleteUser = db.tblUsers.Where(e => e.Id == id).FirstOrDefault();
+                        var deleteUser = db.tblUsers.Where(e => e.Id == id).FirstOrDefault();      ///////////////
                         db.tblUsers.Remove(deleteUser);
                         db.SaveChanges();
                         return RedirectToAction("User_Data", "UserData");
