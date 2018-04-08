@@ -28,6 +28,8 @@
         <EntityTypeShape EntityType="Model.tblRole" Width="1.5" PointX="0.75" PointY="8.125" />
         <AssociationConnector Association="Model.FK_tblUser_tblRole" />
         <AssociationConnector Association="Model.FK_tblTemplate_tblUser1" />
+        <AssociationConnector Association="Model.FK_tblDislike_tblNotes" />
+        <AssociationConnector Association="Model.FK_tblLike_tblNotes" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
