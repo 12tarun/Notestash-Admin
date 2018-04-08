@@ -26,11 +26,42 @@ namespace Notestash_Admin.Controllers
             }             
         }
 
+
+     // Display selected User's complete activity
         [HttpGet]
         public ActionResult SelectedUser(int id)
         {
-            // working till here fetch the info from db of selected user now.....
-            return View();
+            if (Session["Login"] == null)
+            {
+                return RedirectToAction("SignIn", "Login");
+            }
+            else
+            {
+                using (Notestash_Database_Entities db = new Notestash_Database_Entities())
+                {
+                    var selectUser = db.tblUsers.Where(e => e.Id == id).FirstOrDefault();
+                    return View(selectUser);
+                }
+            }
+        }
+
+        
+        public ActionResult DeleteSelectedUser(int id)
+        {
+            if (Session["Login"] == null)
+            {
+                return RedirectToAction("SignIn", "Login");
+            }
+            else
+            {
+                using (Notestash_Database_Entities db = new Notestash_Database_Entities())
+                {
+                    var deleteUser = db.tblUsers.Where(e => e.Id == id).FirstOrDefault();
+                    db.tblUsers.Remove(deleteUser);
+                    db.SaveChanges();
+                    return RedirectToAction("User_Data", "UserData");
+                }
+            }
         }
     }
 }

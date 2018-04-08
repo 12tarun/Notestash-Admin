@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Notes_Data";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    .make-it-slow:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    #tblBodyRow:hover {
+        background-color: #EEE;
+        /*top: -10px;*/
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    int i = 1;
+
+    @Html.AntiForgeryToken()
+
+    <br />
+    <h2>NOTES</h2>
+
+        <table id="my-table" class="table">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        NAME
+                    </th>
+                    <th>
+                        CONTENT
+                    </th>
+                    <th>
+                        STATUS
+                    </th>
+                    <th>
+                        LIKES
+                    </th>
+                    <th>
+                        DISLIKES
+                    </th>
+                    <th>
+                        COMMENTS
+                    </th>
+                    <th>
+                        DOWNLOADS
+                    </th>
+                    <th>
+                        CREATED_AT
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tblUserData">
+
+                @foreach (var item in Model)
+                {
+
+                    <tr id="tblBodyRow" class="make-it-slow" onclick="location.href='@Url.Action("SelectedUser", "UserData", new { id = item.Id })'" style="cursor:pointer;">
+                        <td>
+                            @i
+                        </td>
+                        <td>
+                            @item.NoteName
+                        </td>
+                        <td>
+                            @item.NoteContent
+                        </td>
+                        <td>
+                            @item.NoteStatus
+                        </td>
+                        <td>
+                            @item.Likes
+                        </td>
+                        <td>
+                            @item.Dislikes
+                        </td>
+                        <td>
+                            @item.Comments
+                        </td>
+                        <td>
+                            @item.Downloads
+                        </td>
+                        <td>
+                            @item.Created_at
+                        </td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+}
