@@ -10,7 +10,7 @@ namespace Notestash_Admin.Controllers
     public class UserDataController : Controller
     {
 
-     // Show user data
+     // Show users' data
         [HttpGet]
         public ActionResult User_Data()
         {
@@ -45,7 +45,7 @@ namespace Notestash_Admin.Controllers
             }
         }
 
-        
+     // Delete a user or an admin  
         public ActionResult DeleteSelectedUser(int id)
         {
             if (Session["Login"] == null)
@@ -56,10 +56,17 @@ namespace Notestash_Admin.Controllers
             {
                 using (Notestash_Database_Entities db = new Notestash_Database_Entities())
                 {
-                    var deleteUser = db.tblUsers.Where(e => e.Id == id).FirstOrDefault();
-                    db.tblUsers.Remove(deleteUser);
-                    db.SaveChanges();
-                    return RedirectToAction("User_Data", "UserData");
+                    if(id != (int)Session["Login"])                                                // User cannot delete himself as there should be atleast one admin                                                                                                  
+                    {                                                                              // if he deletes all other admins.
+                        var deleteUser = db.tblUsers.Where(e => e.Id == id).FirstOrDefault();
+                        db.tblUsers.Remove(deleteUser);
+                        db.SaveChanges();
+                        return RedirectToAction("User_Data", "UserData");
+                    }
+                    else
+                    {
+                        return RedirectToAction("User_Data", "UserData");
+                    }
                 }
             }
         }

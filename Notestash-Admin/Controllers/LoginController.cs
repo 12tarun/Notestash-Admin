@@ -64,7 +64,7 @@ namespace Notestash_Admin.Controllers
 
                         if (userCredentials != null)
                         {
-                            Session["Login"] = user.Email;
+                            Session["Login"] = user.Id;
                             
                             // cookie based login
 
